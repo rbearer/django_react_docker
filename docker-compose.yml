@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - type: volume
+        source: web
+        target: /usr/src/web/
+    ports:
+      - 8000:8000       # 8000 is for Django API
+      - 3000:3000       # 3000 is for React Dev Server
+      - 35729:35729     # 35729 is for NodeJS Live Reload TODO This may be unnecessary
+    env_file:
+      - ./.env
+    stdin_open: true
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:14.2-alpine
+    volumes:
+      - type: volume
+        source: postgres_data
+        target: /var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=dev_user
+      - POSTGRES_PASSWORD=dev_password
+      - POSTGRES_DB=dev
+
+volumes:
+  postgres_data:
+  web:
