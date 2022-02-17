@@ -1,16 +1,16 @@
 version: "3.8"
 
 services:
-  web:
-    container_name: web
+  music_buddy:
+    container_name: music_buddy
     build:
-      context: ./web
+      context: ./music_buddy
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - type: volume
-        source: web
-        target: /usr/src/web/
+        source: music_buddy
+        target: /usr/src/music_buddy/
     ports:
       - 8000:8000       # 8000 is for Django API
       - 3000:3000       # 3000 is for React Dev Server
@@ -35,4 +35,4 @@ services:
 
 volumes:
   postgres_data:
-  web:
+  music_buddy:
